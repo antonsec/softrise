@@ -4,7 +4,7 @@ Authorized 2026-11-18 after the user confirmed that the short taps and ramp felt
 
 ## Operation
 
-SoftRise opens to a single 24-hour wake-time screen. Tap or drag the separate HOUR and MINUTE sliders to choose time. Minutes snap to five-minute increments. UP/DOWN also moves the whole time in five-minute steps with hour/day wraparound. START arms immediately. Hold UP while idle for ramp-duration options (1–5 minutes) and the original vibration lab. Older saved minutes round down to the nearest five-minute boundary. The saved hour/minute/ramp survive restart; an armed alarm does not.
+SoftRise opens to a single 24-hour wake-time screen. Tap or drag the separate HOUR and MINUTE sliders to choose time. Minutes snap to five-minute increments. UP/DOWN also moves the whole time in five-minute steps with hour/day wraparound. Tap the rounded Set alarm button or press START to arm immediately. Hold UP while idle for ramp-duration options (1–5 minutes) and the original vibration lab. Older saved minutes round down to the nearest five-minute boundary. The saved hour/minute/ramp survive restart; an armed alarm does not.
 
 Leave the app open, launched from the activity list. START or BACK cancels an armed/ringing/snoozed alarm. During ringing, either UP or DOWN snoozes for five minutes, then restarts the ramp. BACK exits while idle. The selected minute already reached schedules tomorrow, not an immediate alarm.
 

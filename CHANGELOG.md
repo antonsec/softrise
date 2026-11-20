@@ -6,6 +6,8 @@ Personal prototype for Forerunner 265. No public release has been made.
 
 ### Features
 
+- Rounded, tappable Set alarm button with physical START support.
+
 - Foreground alarm with touch hour/minute sliders and five-minute button adjustments.
 - Configurable 1–5 minute ramp using repeating three-tap sets.
 - Stop, five-minute snooze, saved settings and ten-minute ringing limit.

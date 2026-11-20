@@ -16,7 +16,7 @@ Supported device: **Forerunner 265 (`fr265`), 416×416 AMOLED**. The 265S is not
 
 1. Open SoftRise from the watch's activity/app list.
 2. Tap or drag **HOUR** and **MINUTE**. Minutes snap to five-minute steps. Physical **UP** adds five minutes; **DOWN** subtracts five minutes.
-3. Press **START** to arm. The screen shows the next occurrence of the time and whether it is today or tomorrow. A selected minute already reached schedules tomorrow.
+3. Tap the rounded **Set alarm** button or press **START** to arm. The screen shows the next occurrence of the time and whether it is today or tomorrow. A selected minute already reached schedules tomorrow.
 4. Leave SoftRise open. **START or BACK** stops/disarms; either UP or DOWN while ringing snoozes five minutes and restarts the ramp afterward.
 
 **Hold UP while idle** for ramp length (1–5 minutes) and the vibration lab. BACK exits while idle. Settings are remembered; an armed alarm is never restored automatically after restart. Touch editing is disabled while armed.
@@ -56,7 +56,7 @@ Detected clock jumps or timezone/DST changes disarm the alarm and ask you to rea
 
 ## Validation
 
-The reviewed build compiles without warnings with SDK 9.3.0; all **12 automated simulator tests pass**. Tests cover scheduling, three-tap sets, snooze, cancellation, clock changes, touch mapping, and battery/error reporting. They do not replace hardware tests. The owner has reported one positive overnight outcome; exact build/settings and battery/sleep data were not recorded.
+The reviewed build compiles without warnings with SDK 9.3.0; all **13 automated simulator tests pass**. Tests cover scheduling, three-tap sets, snooze, cancellation, clock changes, touch mapping, and battery/error reporting. They do not replace hardware tests. The owner has reported one positive overnight outcome; exact build/settings and battery/sleep data were not recorded.
 
 ## Project documentation
 

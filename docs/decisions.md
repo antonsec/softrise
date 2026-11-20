@@ -65,3 +65,7 @@ Preserve the battery end snapshot once stopped: idle menu navigation/hide/exit m
 ## Button direction preference — 2026-11-20
 
 User requested UP to add five minutes and DOWN to subtract five minutes. Reversed only the alarm time-adjustment mapping; lab navigation and ringing snooze behavior remain the same. Regression checks cover UP wrapping 23:55 to 00:00 and DOWN wrapping back.
+
+## Rounded Set alarm action — 2026-11-20
+
+Replaced the technical START: arm hint with a mint rounded Set alarm button. A tap within its pill-shaped bounds invokes the existing select action; physical START remains supported. The button is only active while idle and visible. Slider touches and drags do not arm; touch input at the old button location while armed does not cancel. Hit testing uses the same geometry as rendering.

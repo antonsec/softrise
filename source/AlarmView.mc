@@ -92,6 +92,20 @@ class AlarmView extends WatchUi.View {
         if (y >= screenHeight*0.62 && y <= screenHeight*0.73) { return 1; }
         return -1;
     }
+    function setButtonBounds() as Lang.Array<Lang.Numeric> {
+        return [screenWidth*0.25, screenHeight*0.76, screenWidth*0.50, screenHeight*0.12];
+    }
+    function setButtonAt(x, y) {
+        if (!visible || active()) { return false; }
+        var b = setButtonBounds();
+        var radius = b[3]/2;
+        var centerX = x;
+        if (centerX < b[0]+radius) { centerX = b[0]+radius; }
+        if (centerX > b[0]+b[2]-radius) { centerX = b[0]+b[2]-radius; }
+        var dx = x-centerX;
+        var dy = y-(b[1]+radius);
+        return dx*dx + dy*dy <= radius*radius;
+    }
     function setSlider(index, x) {
         if (!visible || active()) { return; }
         var ratio = (x - screenWidth*0.20)/(screenWidth*0.60);
@@ -208,7 +222,12 @@ class AlarmView extends WatchUi.View {
             slider(dc, 0.52, hour, 23);
             text(dc, 0.59, Graphics.FONT_XTINY, "MINUTE / 5 min", muted);
             slider(dc, 0.68, minute/5, 11);
-            text(dc, 0.79, Graphics.FONT_XTINY, "START: arm", mint);
+            var button = setButtonBounds();
+            dc.setColor(mint, Graphics.COLOR_TRANSPARENT);
+            dc.fillRoundedRectangle(button[0], button[1], button[2], button[3], button[3]/2);
+            dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_TRANSPARENT);
+            var labelY = button[1] + (button[3]-dc.getFontHeight(Graphics.FONT_XTINY))/2;
+            dc.drawText(screenWidth/2, labelY, Graphics.FONT_XTINY, "Set alarm", Graphics.TEXT_JUSTIFY_CENTER);
             text(dc, 0.23, Graphics.FONT_XTINY, idleDetail(), muted);
         }
     }
@@ -220,6 +239,10 @@ class AlarmDelegate extends WatchUi.BehaviorDelegate {
     function initialize(view) { BehaviorDelegate.initialize(); alarm = view; }
     function onTap(event) {
         var point = event.getCoordinates();
+        if (alarm.setButtonAt(point[0], point[1])) {
+            alarm.select();
+            return true;
+        }
         var index = alarm.sliderAt(point[0], point[1]);
         if (index >= 0) { alarm.setSlider(index, point[0]); }
         return true;

@@ -180,3 +180,37 @@ function snoozeShowsNewTime(logger) {
     Test.assertEqual(v.displayTime(), due.hour.format("%02d") + ":" + due.min.format("%02d"));
     return true;
 }
+
+(:test)
+class ButtonTestAlarm extends ControlledAlarmView {
+    var selections = 0;
+    function initialize() { ControlledAlarmView.initialize(); }
+    function select() { selections += 1; }
+}
+
+(:test)
+class TestAlarmTap {
+    var point;
+    function initialize(x, y) { point = [x, y]; }
+    function getCoordinates() { return point; }
+}
+
+(:test)
+function setAlarmButtonTouch(logger) {
+    var v = new ButtonTestAlarm(); v.onShow();
+    var input = new AlarmDelegate(v);
+    Test.assertEqual(v.setButtonAt(208, 341), true);
+    Test.assertEqual(v.setButtonAt(104, 316), false); // Outside rounded corner.
+    Test.assertEqual(v.setButtonAt(208, 283), false); // Minute slider.
+    input.onTap(new TestAlarmTap(208, 341));
+    Test.assertEqual(v.selections, 1);
+    input.onTap(new TestAlarmTap(208, 283));
+    Test.assertEqual(v.selections, 1);
+    v.engine.arm(100, 60, 3);
+    input.onTap(new TestAlarmTap(208, 341));
+    Test.assertEqual(v.selections, 1); // Stale tap cannot stop an armed alarm.
+    v.onHide();
+    input.onTap(new TestAlarmTap(208, 341));
+    Test.assertEqual(v.selections, 1);
+    return true;
+}

@@ -101,3 +101,7 @@ Documentation links, manifest XML and shell syntax were checked. New README, dev
 ## Button direction — 2026-11-20
 
 Alarm UP now adds five minutes and DOWN subtracts five minutes, per user preference. Test/release builds succeeded without warnings; all 12 simulator tests passed, including the reversed button mapping and midnight wrap. Initial run could not connect because the simulator was closed; reopening resolved it. SDK again returned exit code 1 with its explicit all-pass report. Actual button feel still needs the watch.
+
+## Rounded Set alarm button — 2026-11-20
+
+Replaced START: arm with a rounded mint Set alarm touch button; physical START still works. Debug/test and release compilation succeeded without warnings after a geometry type annotation. All 13 simulator tests passed, including pill hit boundaries, slider isolation, and armed/hidden touch lockout. The initial simulator connection failed because it was closed; reopening resolved it. SDK again returned 1 alongside its explicit all-pass report. Actual watch layout and touch feel need hardware confirmation. No GitHub push was made for this change.
