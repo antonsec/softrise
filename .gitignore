@@ -1,0 +1,17 @@
+bin/
+.local/
+*.der
+*.pem
+*.key
+*.p12
+*.prg
+*.prg.debug.xml
+*.iq
+.DS_Store
+.vscode/settings.json
+
+# Local environment and credentials
+.env
+.env.*
+*.pfx
+*.keystore

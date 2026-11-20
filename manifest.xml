@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<iq:manifest xmlns:iq="http://www.garmin.com/xml/connectiq" version="3">
+  <iq:application id="a8f84bac56254ed6bdb9b92182f9b730" type="watch-app" name="@Strings.AppName" entry="SoftRiseApp" launcherIcon="@Drawables.LauncherIcon" minApiLevel="3.3.0">
+    <iq:products><iq:product id="fr265"/></iq:products>
+    <iq:permissions/>
+    <iq:languages><iq:language>eng</iq:language></iq:languages>
+    <iq:barrels/>
+  </iq:application>
+</iq:manifest>
