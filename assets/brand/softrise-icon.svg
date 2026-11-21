@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="0 0 500 500">
+  <title>SoftRise</title>
+  <desc>A rising sun over three soft horizontal lines.</desc>
+  <rect width="500" height="500" fill="#101C26"/>
+  <path d="M150 252a100 100 0 0 1 200 0" fill="none" stroke="#F5C89E" stroke-width="26" stroke-linecap="round"/>
+  <path d="M113 288h274M145 338h210M181 388h138" fill="none" stroke="#A8DFCA" stroke-width="24" stroke-linecap="round"/>
+  <path d="M250 79v32M125 132l23 23M375 132l-23 23" fill="none" stroke="#A8DFCA" stroke-width="18" stroke-linecap="round"/>
+</svg>

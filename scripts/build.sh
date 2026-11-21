@@ -27,17 +27,28 @@ if [[ ! -f "$key" ]]; then
 fi
 mkdir -p bin
 output=bin/SoftRise.prg
-set -- "${1:-}"
-build_mode="$1"
+build_mode="${1:-}"
+target="${2:-fr265}"
+if [[ $# -gt 2 || ( "$target" != fr265 && "$target" != fr265s ) ||
+      ( "$target" == fr265s && "$build_mode" != --device && "$build_mode" != --test ) ]]; then
+    echo 'Usage: bash scripts/build.sh [--device [fr265s]|--test [fr265s]|--package]' >&2
+    exit 1
+fi
 set --
 if [[ "$build_mode" == "--test" ]]; then
     output=bin/SoftRise-tests.prg
     set -- -t
+elif [[ "$build_mode" == "--package" ]]; then
+    output="bin/SoftRise-$(cat VERSION).iq"
+    set -- -e -r
 elif [[ "$build_mode" == "--device" ]]; then
     set -- -r
 elif [[ -n "$build_mode" ]]; then
-    echo 'Usage: bash scripts/build.sh [--device|--test]' >&2
+    echo 'Usage: bash scripts/build.sh [--device|--test|--package]' >&2
     exit 1
 fi
+if [[ "$target" == fr265s ]]; then
+    output="${output%.prg}-fr265s.prg"
+fi
 java -Dfile.encoding=UTF-8 -Dapple.awt.UIElement=true -jar "$sdk/bin/monkeybrains.jar" \
-    -f monkey.jungle -d fr265 -o "$output" -y "$key" -w "$@"
+    -f monkey.jungle -d "$target" -o "$output" -y "$key" -w "$@"

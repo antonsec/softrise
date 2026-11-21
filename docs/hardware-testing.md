@@ -105,3 +105,33 @@ Alarm UP now adds five minutes and DOWN subtracts five minutes, per user prefere
 ## Rounded Set alarm button — 2026-11-20
 
 Replaced START: arm with a rounded mint Set alarm touch button; physical START still works. Debug/test and release compilation succeeded without warnings after a geometry type annotation. All 13 simulator tests passed, including pill hit boundaries, slider isolation, and armed/hidden touch lockout. The initial simulator connection failed because it was closed; reopening resolved it. SDK again returned 1 alongside its explicit all-pass report. Actual watch layout and touch feel need hardware confirmation. No GitHub push was made for this change.
+
+## Owner battery observation — 2026-11-20
+
+Owner described the first overnight test as taking “like 0 battery.” Record this as **no noticeable drop reported**, not zero power consumption. Exact before/after percentages, elapsed time, firmware/settings and measurement resolution were not supplied. No incremental battery drain can be calculated from this observation; controlled baseline measurements remain pending.
+
+## Release candidate 0.1.0-rc.1 — 2026-11-20
+
+Refined the existing vector brand to a sunrise and one horizon, per user feedback. Rendered opaque RGB/sRGB 500×500 and 128×128 store icons and a wordmark, and visually inspected the 500px icon plus wordmark. Rebuilt test, device, and IQ package artifacts successfully without warnings; exporter reported one device built (fr265 only). All 13 simulator tests passed; SDK again returned 1 with its explicit zero-errors all-pass report. Shell syntax, SVG/manifest XML, local documentation links, raster dimensions/profile, and artifact existence were checked. SHA-256 checksums are stored locally in ignored bin/. An attempted ZIP listing was inapplicable because the SDK-produced IQ is not a ZIP archive; no portal validation has occurred. Actual app screenshots and exact-candidate hardware tests remain pending. No public release, Garmin submission, or GitHub push was made.
+
+## Owner photos and transparent launcher — 2026-11-20
+
+Owner supplied IMG_9798, IMG_9799 and IMG_9800 showing the real watch’s app list, touch time editor/Set alarm button, and Armed / Today screen at 18:55. Photos confirm these screens render on hardware; no ringing/snooze state or measured battery interval was shown. The single visible 99% reading is not a before/after battery measurement. Photo originals remain outside the repository.
+
+Restored three-line branding and changed launcher to a transparent PNG. Device and package builds succeeded without warnings. Standalone 500px mark, wordmark and 60px launcher alpha channels were verified (transparent corners; alpha range 0–255), and the mark visually inspected. Native list compositing still needs a watch check after installing the rebuilt PRG. This change did not alter alarm logic; no new automated behavior run was performed.
+
+## Transparent icon confirmed and ringing photo — 2026-11-20
+
+Owner confirmed the updated icon is correct and looks better on the watch. IMG_9801 shows SoftRise displaying 12:45, Waking / 1 of 3, snooze and stop controls on the actual Forerunner 265. This verifies the ringing-stage screen renders; the still image does not verify pulse duration, all three stages, snooze operation or stop operation. Owner is creating their Garmin developer account; no submission is recorded. Photo original remains outside the repository.
+
+## Experimental Forerunner 265S target — 2026-11-21
+
+Added an opt-in local build for `fr265s`. The standard 265 test build compiled successfully, and a 265 release build verified that the temporary project resolves the shared source and resources. The 265S compile stopped because its device definition was missing from this Mac's SDK installation. No 265S simulator or hardware checks have been run.
+
+After the 265S device profile was installed, the 265S release PRG and simulator test PRG both compiled successfully without warnings. The first simulator test invocation could not connect to the simulator. No 265S hardware checks have been performed.
+
+After the owner opened ConnectIQ.app, all 13 tests passed on the Forerunner 265S simulator (zero failures and zero errors). The SDK runner returned exit code 1 alongside its explicit pass report, as on the 265. The automated run exercises alarm logic and input handling. Visual inspection on the 360 × 360 display and physical vibration, screen timeout, and battery behavior still need validation.
+
+The owner subsequently reported that all features worked in the Forerunner 265S simulator, including the vibration event. The earlier reported exit was no longer occurring for them, and its cause remains unknown. This is simulator evidence. Physical vibration and alarm behavior after the 265S display dims remain unverified.
+
+The signed 0.1.0-rc.2 package exported successfully with both declared targets, fr265 and fr265s. This verifies packaging for both models. The physical 265S check is still pending.

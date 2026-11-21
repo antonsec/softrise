@@ -1,5 +1,7 @@
 # SoftRise
 
+![SoftRise — A gentler start.](assets/brand/softrise-wordmark.png)
+
 A gradual vibration alarm experiment for the **Garmin Forerunner 265**.
 
 SoftRise started with a personal problem: the normal watch alarm felt abrupt. Instead of trying to change the motor's fixed strength, it starts with brief taps and gradually makes them longer and more frequent.
@@ -10,7 +12,7 @@ SoftRise started with a personal problem: the normal watch alarm felt abrupt. In
 
 **SoftRise must stay open while armed. Leaving or hiding the app cancels the alarm.** It is a separate Connect IQ app and does not modify Garmin's built-in alarms. Letting the screen time out normally is part of the hardware test; the app never forces the display on. Keep an independent backup alarm while testing.
 
-Supported device: **Forerunner 265 (`fr265`), 416×416 AMOLED**. The 265S is not supported by this project.
+The published release supports the **Forerunner 265**. Version **0.1.0-rc.2** adds a build for the **Forerunner 265S**. The 265S passed simulator tests and awaits physical watch validation.
 
 ## Use it
 
@@ -37,7 +39,9 @@ Forerunners have [fixed vibration duty cycle](https://developer.garmin.com/conne
 
 ## Install on a Mac
 
-For building from source, follow [the development guide](docs/development.md). There is no store release or downloadable public release yet.
+Release-candidate package and store-copy preparation are tracked in [the release checklist](docs/release/checklist.md).
+
+For building from source, follow [the development guide](docs/development.md).
 
 1. Build: `bash scripts/build.sh --device`.
 2. Connect the watch with a data-capable USB cable and open [OpenMTP](https://openmtp.ganeshrvel.com/). Quit competing MTP clients such as Garmin Express.
@@ -71,4 +75,4 @@ The original vibration lab remains available for short/medium/long pulse compari
 
 ## License
 
-Source code is available under the [MIT License](LICENSE). Garmin’s SDK and tools are separate and subject to Garmin’s terms. This project is independent of Garmin. No Connect IQ Store release has been submitted.
+Source code is available under the [MIT License](LICENSE). Garmin’s SDK and tools are separate and subject to Garmin’s terms. This project is independent of Garmin.

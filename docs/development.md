@@ -1,6 +1,6 @@
 # Development guide
 
-SoftRise is a native Monkey C Connect IQ watch app targeting only **fr265**. Start with [the README](../README.md) for behavior and limitations. [Architecture](architecture.md) explains the source layout.
+SoftRise is a native Monkey C Connect IQ watch app targeting **fr265** and **fr265s**. Start with [the README](../README.md) for behavior and limitations. [Architecture](architecture.md) explains the source layout.
 
 Validated toolchain: Connect IQ SDK 9.3.0, Java 17, Garmin Monkey C VS Code extension 1.1.3. Garmin account/login and SDK agreement steps are completed by the developer.
 
@@ -20,9 +20,10 @@ Official [setup guide](https://developer.garmin.com/connect-iq/connect-iq-basics
 bash scripts/build.sh             # debug build: bin/SoftRise.prg
 bash scripts/build.sh --device    # release device build: bin/SoftRise.prg
 bash scripts/build.sh --test      # test-enabled build: bin/SoftRise-tests.prg
+bash scripts/build.sh --package   # signed store candidate: bin/SoftRise-<VERSION>.iq
 ```
 
-The script reads SDK Manager's active SDK. `CIQ_SDK_HOME` and `CIQ_DEVELOPER_KEY` can override local locations without changing tracked files. The only product target is `fr265`. The updated device build uses the same app ID: copy `bin/SoftRise.prg` over the existing file in GARMIN/APPS. `bin/SoftRise-lab.prg` is a local backup of the original lab build, not a second app to install alongside it.
+The script reads SDK Manager's active SDK. `CIQ_SDK_HOME` and `CIQ_DEVELOPER_KEY` can override local locations without changing tracked files. The default standalone build targets `fr265`. The package includes both manifest targets. The updated device build uses the same app ID: copy `bin/SoftRise.prg` over the existing file in GARMIN/APPS. `bin/SoftRise-lab.prg` is a local backup of the original lab build, not a second app to install alongside it.
 
 To run interactively, open a `.mc` source file in VS Code, choose **Run Without Debugging**, and select **Forerunner 265**. Verify each button, stage transition, automatic completion, cancellation, and exit using the checklist. The simulator cannot establish physical vibration feel, watch firmware timing, or overnight reliability.
 
@@ -62,6 +63,25 @@ Tests replace time/motor/battery boundaries to exercise deadlines, grouping, can
 - Keep `.local/`, credentials, and signing keys private. The PRG/IQ files are generated artifacts, not source.
 - Keep the app manifest ID stable for updates; use the same signing key and back it up privately.
 - Source is licensed under MIT; retain the copyright and license notice in redistributed copies. Garmin SDK files are not included.
-- Target only hardware with actual evidence; do not add 265S based on similar naming.
+- Record simulator and physical watch validation separately for each model.
 - Export a store package using **Monkey C: Export Project** when ready. Garmin reviews public submissions. No upload/push/publication has been performed or authorized here.
 - `.gitignore` excludes local keys, environment files, SDK-independent generated builds, and machine settings. Review the staged file list before every public push.
+
+## Brand assets
+
+Editable SVG sources and rendered store assets live in assets/brand/. The store icon is 500×500 RGB with an embedded sRGB profile; an optional device-store icon is 128×128. The app launcher uses a transparent 60×60 PNG in resources/drawables/launcher.png; editable SVG source is retained. The standalone mark and wordmark PNG preserve alpha transparency. The wordmark is not used as the store icon.
+
+To reproduce PNGs, install cairosvg and Pillow in an ignored local virtual environment and run `scripts/render-brand.py` with that Python. On Apple Silicon macOS, Cairo may need `DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib`. These are optional asset-authoring dependencies, not app dependencies. The supplied SVG sources do not require the image-generation API.
+
+VERSION labels the release candidate filename. The --package mode exports the signed IQ with the existing developer key; keep the key private. Store metadata/version entry and Garmin review are separate from successful compilation. See [release checklist](release/checklist.md).
+
+## Experimental Forerunner 265S build
+
+In Garmin SDK Manager, download the Forerunner 265S device definition (`fr265s`). Build the sideloadable app or the simulator test suite:
+
+```sh
+bash scripts/build.sh --device fr265s  # bin/SoftRise-fr265s.prg
+bash scripts/build.sh --test fr265s    # bin/SoftRise-tests-fr265s.prg
+```
+
+Both models share the same app code and manifest. The store package contains both targets. To run the suite, start the simulator, set the SDK and Java paths as above, and run `"$CIQ_SDK_HOME/bin/monkeydo" bin/SoftRise-tests-fr265s.prg fr265s -t`. Simulator checks cover the alarm logic and input handling. On the 265S itself, check that the layout fits, the alarm fires after the screen dims while the app remains open, the short pulses are noticeable, and snooze and stop respond.

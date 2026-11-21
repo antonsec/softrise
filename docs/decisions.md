@@ -69,3 +69,11 @@ User requested UP to add five minutes and DOWN to subtract five minutes. Reverse
 ## Rounded Set alarm action — 2026-11-20
 
 Replaced the technical START: arm hint with a mint rounded Set alarm button. A tap within its pill-shaped bounds invokes the existing select action; physical START remains supported. The button is only active while idle and visible. Slider touches and drags do not arm; touch input at the old button location while armed does not cancel. Hit testing uses the same geometry as rendering.
+
+## Store candidate and brand preparation — 2026-11-20
+
+User requested a logo, description and release preparation, then asked to remove the two lower lines. Refined the existing vector sunrise identity to a peach sunrise and a single mint horizon on navy, without Garmin branding. Created SVG source, 500px sRGB store PNG, optional 128px device-store PNG, wordmark, and matching 60px launcher. Uses native SVG tooling rather than raster image generation because the established mark is editable vector art. Added VERSION (0.1.0-rc.1), compiler package export mode and local signed IQ candidate. Draft listing and privacy/support notice disclose foreground-only behavior. The user's no-noticeable-battery-drop report remains subjective evidence. No public tag/release, push, Garmin upload or submission is performed for this candidate. Actual screenshots and exact-build hardware checks remain pending.
+
+## Restore three-line mark and transparent launcher — 2026-11-20
+
+Owner preferred the three-line mark and supplied photos showing the launcher’s dark tile against the activity list. Restored both lower lines. Exported standalone mark and wordmark as true-alpha PNGs and switched the native launcher resource to a matching transparent 60px PNG. Opaque 500px store and optional 128px device-store assets retain navy because store artwork guidance calls for a solid background. Rebuilt device PRG and signed IQ successfully without warnings; checked alpha values and visually inspected the standalone PNG. No timing/behavior code changed; simulator tests were not rerun for this asset-only change.

@@ -1,6 +1,6 @@
 # SoftRise
 
-Native Monkey C Connect IQ watch app for **Forerunner 265 (`fr265`), not 265S**.
+Native Monkey C Connect IQ watch app targeting **Forerunner 265 (`fr265`) and 265S (`fr265s`)**. The 265S has simulator coverage and awaits hardware validation.
 Current scope: a foreground alarm experiment plus the vibration lab. Overnight reliability is unverified.
 
 - Read README.md and docs/decisions.md before changing behavior; docs/development.md covers tooling and docs/architecture.md covers source responsibilities.

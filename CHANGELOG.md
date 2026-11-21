@@ -1,8 +1,19 @@
 # Changelog
 
+## 0.1.0-rc.2 — package prepared locally
+
+- Added Forerunner 265S to the package alongside the Forerunner 265. All 13 tests passed on the 265S simulator. Physical 265S validation is pending.
+
+## 0.1.0-rc.1 — approved on Connect IQ
+
+- Three-line sunrise logo, transparent 60px launcher and reusable PNG mark/wordmark; opaque 500px store and 128px device-store icons.
+- Draft store listing, privacy/support notice, and release checklist.
+- Signed IQ export using `bash scripts/build.sh --package`; generated packages remain ignored.
+- Owner reports no noticeable battery drop after one night; exact readings remain unrecorded.
+
 ## Unreleased
 
-Personal prototype for Forerunner 265. No public release has been made.
+Initial development for Forerunner 265.
 
 ### Features
 
