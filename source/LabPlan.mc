@@ -1,5 +1,15 @@
 // Experimental values, not perceptual guarantees or documented device limits.
 module LabPlan {
+    const GENTLE = 0;
+    const STEADY = 1;
+    const SLOW = 2;
+    const PATTERNS = ["Gentle", "Steady", "Slow pulse"];
+    const GENTLE_MS = [50, 75, 110];
+    const GENTLE_PAUSE = [6, 5, 4];
+    const SLOW_MS = [450, 650, 850];
+    const SLOW_PAUSE = [8, 7, 6];
+    const WAKE_MS = 200;
+    const WAKE_PAUSE = 4;
     const SHORT_MS = 80;
     const MEDIUM_MS = 250;
     const LONG_MS = 600;

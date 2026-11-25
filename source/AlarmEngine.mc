@@ -9,10 +9,15 @@ module AlarmPlan {
     function stage(age, rampMinutes) {
         return age >= rampMinutes * 60 ? 2 : (age * 3 / (rampMinutes * 60));
     }
-    function lengthMs(stageIndex) {
+    function tapsPerSet(pattern) { return pattern == LabPlan.SLOW ? 2 : LabPlan.ALARM_TAPS_PER_SET; }
+    function lengthMs(pattern, stageIndex) {
+        if (pattern == LabPlan.GENTLE) { return LabPlan.GENTLE_MS[stageIndex]; }
+        if (pattern == LabPlan.SLOW) { return LabPlan.SLOW_MS[stageIndex]; }
         return [LabPlan.ALARM_FIRST_MS, LabPlan.ALARM_SECOND_MS, LabPlan.ALARM_THIRD_MS][stageIndex];
     }
-    function setPause(stageIndex) {
+    function setPause(pattern, stageIndex) {
+        if (pattern == LabPlan.GENTLE) { return LabPlan.GENTLE_PAUSE[stageIndex]; }
+        if (pattern == LabPlan.SLOW) { return LabPlan.SLOW_PAUSE[stageIndex]; }
         return [LabPlan.ALARM_FIRST_PAUSE, LabPlan.ALARM_SECOND_PAUSE, LabPlan.ALARM_THIRD_PAUSE][stageIndex];
     }
 }
@@ -23,6 +28,8 @@ class AlarmEngine {
     var ringAt = 0;
     var nextPulse = 0;
     var stageIndex = 0;
+    var wakeMode = false;
+    var pattern = LabPlan.STEADY;
     var rampMinutes = 3;
     var pulses = 0;
     var setTaps = 0;
@@ -34,6 +41,7 @@ class AlarmEngine {
         pulses = 0;
         setTaps = 0;
         stageIndex = 0;
+        wakeMode = false;
     }
     function cancel() { state = "idle"; }
     function snooze(now) {
@@ -42,6 +50,7 @@ class AlarmEngine {
         state = "snoozed";
         setTaps = 0;
         stageIndex = 0;
+        wakeMode = false;
     }
     // Returns requested pulse length, or zero. No motor or timer in this model.
     function tick(now) {
@@ -61,16 +70,18 @@ class AlarmEngine {
             return 0;
         }
         var nextStage = AlarmPlan.stage(age, rampMinutes);
-        if (nextStage != stageIndex) { stageIndex = nextStage; nextPulse = now; setTaps = 0; }
+        if (nextStage != stageIndex) { stageIndex = nextStage; if (pattern == LabPlan.STEADY) { nextPulse = now; } setTaps = 0; }
         if (now < nextPulse) { return 0; }
+        if (age >= rampMinutes * 60 && setTaps == 0) { wakeMode = true; }
+        var taps = wakeMode ? LabPlan.ALARM_TAPS_PER_SET : AlarmPlan.tapsPerSet(pattern);
         setTaps += 1;
-        if (setTaps == LabPlan.ALARM_TAPS_PER_SET) {
+        if (setTaps == taps) {
             setTaps = 0;
-            nextPulse = now + AlarmPlan.setPause(stageIndex);
+            nextPulse = now + (wakeMode ? LabPlan.WAKE_PAUSE : AlarmPlan.setPause(pattern, stageIndex));
         } else {
             nextPulse = now + LabPlan.ALARM_TAP_SPACING;
         }
         pulses += 1;
-        return AlarmPlan.lengthMs(stageIndex);
+        return wakeMode ? LabPlan.WAKE_MS : AlarmPlan.lengthMs(pattern, stageIndex);
     }
 }

@@ -7,8 +7,9 @@ SoftRise is one foreground watch app with no external dependencies, backend, pho
 | File | Responsibility |
 | --- | --- |
 | `source/SoftRiseApp.mc` | Creates the alarm screen and stops alarm/lab activity at app exit |
-| `source/AlarmEngine.mc` | Deterministic scheduling, three-tap sets, stage progression, snooze and completion; no hardware calls |
+| `source/AlarmEngine.mc` | Deterministic scheduling, preset sets, Wake up mode, stage progression, snooze and completion; no hardware calls |
 | `source/AlarmView.mc` | Settings, timers, clock checks, motor requests, screen rendering, battery snapshot and input delegates |
+| `source/PatternView.mc` | Native Test and Save actions and cancellable preset previews |
 | `source/LabPlan.mc` | Experimental alarm and lab pulse parameters; intentionally separate patterns |
 | `source/LabView.mc` | Bounded pulse comparisons and compressed lab sequence |
 | `source/*Tests.mc` | Simulator regression tests with controlled clocks/motor boundaries |

@@ -1,5 +1,7 @@
 # Release candidate checklist
 
+Current upload candidate: `bin/SoftRise-0.1.0-rc.3.iq` for Forerunner 265 and 265S. Use **Upload New Version** on the existing SoftRise listing. Both simulator suites passed 16 tests. Physical validation of the new patterns is pending.
+
 Initial **0.1.0-rc.1** release checklist, kept for reference. The follow-up **0.1.0-rc.2** package includes the 265 and 265S. See [validation notes](../hardware-testing.md) for the 265S status.
 
 ## Prepared locally

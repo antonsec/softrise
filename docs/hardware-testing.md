@@ -135,3 +135,11 @@ After the owner opened ConnectIQ.app, all 13 tests passed on the Forerunner 265S
 The owner subsequently reported that all features worked in the Forerunner 265S simulator, including the vibration event. The earlier reported exit was no longer occurring for them, and its cause remains unknown. This is simulator evidence. Physical vibration and alarm behavior after the 265S display dims remain unverified.
 
 The signed 0.1.0-rc.2 package exported successfully with both declared targets, fr265 and fr265s. This verifies packaging for both models. The physical 265S check is still pending.
+
+## Wake presets · 2026-11-25
+
+Device builds compiled for fr265 and fr265s. Both simulator suites reported 14 passed, zero failures and zero errors, including the new Gentle and Slow pulse timing checks. Visual fit, touch interaction, persistence across a real restart and the feel of each pattern await hands-on verification.
+
+After replacing the custom Test hit area with a native menu action, both simulator suites passed 15 tests. The new regression exercises Test and Stop through the menu delegate and records the requested pulse using a test motor. Actual touch delivery and physical vibration remain unverified.
+
+Updated preset timing and Wake up mode passed all 16 simulator tests on each target. The tests cover fallback cadence across all three presets and snoozing back to the opening stage. Physical feel awaits watch testing.

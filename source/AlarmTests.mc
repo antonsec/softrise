@@ -214,3 +214,70 @@ function setAlarmButtonTouch(logger) {
     Test.assertEqual(v.selections, 1);
     return true;
 }
+
+(:test)
+function wakePatternTiming(logger) {
+    var alarm = new AlarmEngine();
+    alarm.pattern = LabPlan.SLOW;
+    alarm.arm(0, 0, 1);
+    Toybox.Test.assert(alarm.tick(0) == 450);
+    Toybox.Test.assert(alarm.tick(1) == 450);
+    Toybox.Test.assert(alarm.tick(8) == 0);
+    Toybox.Test.assert(alarm.tick(9) == 450);
+    Toybox.Test.assert(alarm.tick(10) == 450);
+    Toybox.Test.assert(alarm.tick(21) == 650);
+    Toybox.Test.assert(alarm.tick(41) == 850);
+    alarm.pattern = LabPlan.GENTLE;
+    alarm.arm(0, 0, 1);
+    Toybox.Test.assert(alarm.tick(0) == 50);
+    Toybox.Test.assert(alarm.tick(1) == 50);
+    Toybox.Test.assert(alarm.tick(2) == 50);
+    Toybox.Test.assert(alarm.tick(7) == 0);
+    Toybox.Test.assert(alarm.tick(8) == 50);
+    return true;
+}
+
+(:test)
+function patternTestAction(logger) {
+    var alarm = new ControlledAlarmView();
+    var picker = new PatternView(alarm, LabPlan.SLOW);
+    picker.onShow();
+    var input = new PatternDelegate(picker);
+    input.onSelect(picker.testItem);
+    Test.assertEqual(alarm.emitted.size(), 1);
+    Test.assertEqual(alarm.emitted[0], 450);
+    Test.assertEqual(picker.testItem.getLabel(), "Stop");
+    input.onSelect(picker.testItem);
+    picker.tick();
+    Test.assertEqual(alarm.emitted.size(), 1);
+    Test.assertEqual(picker.testItem.getLabel(), "Test");
+    picker.onHide();
+    return true;
+}
+
+(:test)
+function everyPresetWakeMode(logger) {
+    for (var pattern = 0; pattern < 3; pattern++) {
+        var alarm = new AlarmEngine();
+        alarm.pattern = pattern;
+        alarm.arm(0, 0, 1);
+        var now = 0;
+        for (; now < 75; now++) {
+            var pulse = alarm.tick(now);
+            if (alarm.wakeMode) {
+                Test.assert(now >= 60);
+                Test.assertEqual(pulse, 200);
+                break;
+            }
+        }
+        Test.assert(alarm.wakeMode);
+        Test.assertEqual(alarm.tick(now+1), 200);
+        Test.assertEqual(alarm.tick(now+2), 200);
+        Test.assertEqual(alarm.tick(now+5), 0);
+        Test.assertEqual(alarm.tick(now+6), 200);
+        alarm.snooze(now+6);
+        Test.assert(!alarm.wakeMode);
+        Test.assertEqual(alarm.tick(alarm.due), AlarmPlan.lengthMs(pattern, 0));
+    }
+    return true;
+}

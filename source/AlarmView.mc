@@ -33,7 +33,10 @@ class AlarmView extends WatchUi.View {
         var settings = null;
         try { settings = Application.Storage.getValue("alarmSettings"); }
         catch (e) { message = "Settings unavailable"; }
-        if (settings instanceof Lang.Array && settings.size() == 3) {
+        if (settings instanceof Lang.Array && settings.size() >= 3) {
+            if (settings.size() >= 4 && settings[3] instanceof Lang.Number && settings[3] >= 0 && settings[3] < LabPlan.PATTERNS.size()) {
+                engine.pattern = settings[3];
+            }
             if (settings[0] instanceof Lang.Number && settings[0] >= 0 && settings[0] < 24) { hour = settings[0]; }
             if (settings[1] instanceof Lang.Number && settings[1] >= 0 && settings[1] < 60) { minute = settings[1]; }
             if (settings[2] instanceof Lang.Number && settings[2] >= 1 && settings[2] <= 5) { ramp = settings[2]; }
@@ -46,7 +49,7 @@ class AlarmView extends WatchUi.View {
     function emitPulse(length) { Attention.vibrate([new Attention.VibeProfile(100, length)]); }
     function saveSettings() {
         try {
-            Application.Storage.setValue("alarmSettings", [hour, minute, ramp]);
+            Application.Storage.setValue("alarmSettings", [hour, minute, ramp, engine.pattern]);
             return true;
         } catch (e) {
             message = "Settings not saved";
@@ -213,7 +216,7 @@ class AlarmView extends WatchUi.View {
         text(dc, 0.32, Graphics.FONT_MEDIUM, time, Graphics.COLOR_WHITE);
         if (active()) {
             var ringing = engine.state.equals("ringing");
-            var label = ringing ? "Waking / " + (engine.stageIndex+1).toString() + " of 3" : engine.state.equals("snoozed") ? "Snoozed" : "Armed / " + dayLabel();
+            var label = ringing ? (engine.wakeMode ? "Wake up mode" : "Waking / " + (engine.stageIndex+1).toString() + " of 3") : engine.state.equals("snoozed") ? "Snoozed" : "Armed / " + dayLabel();
             text(dc, 0.49, Graphics.FONT_SMALL, label, mint);
             text(dc, 0.62, Graphics.FONT_XTINY, ringing ? "UP/DOWN: snooze" : "Leave app open", muted);
             text(dc, 0.73, Graphics.FONT_XTINY, "START/BACK: stop", muted);
@@ -267,10 +270,8 @@ class AlarmDelegate extends WatchUi.BehaviorDelegate {
     function onMenu() {
         if (!alarm.active()) {
             var menu = new WatchUi.Menu2({:title=>"Options"});
-            for (var i = 1; i <= 5; i += 1) {
-                menu.addItem(new WatchUi.MenuItem("Ramp " + i.toString() + " min", null, i, null));
-            }
-            menu.addItem(new WatchUi.MenuItem("Vibration lab", null, 0, null));
+            menu.addItem(new WatchUi.MenuItem("Wake pattern", null, :pattern, null));
+            menu.addItem(new WatchUi.MenuItem("Ramp options", null, :ramp, null));
             WatchUi.pushView(menu, new AlarmOptionsDelegate(alarm), WatchUi.SLIDE_UP);
         }
         return true;
@@ -283,16 +284,40 @@ class AlarmOptionsDelegate extends WatchUi.Menu2InputDelegate {
     function initialize(view) { Menu2InputDelegate.initialize(); alarm = view; }
     function onSelect(item) {
         var id = item.getId();
-        WatchUi.popView(WatchUi.SLIDE_DOWN);
-        if (id == 0) {
-            var lab = new LabView();
-            var app = Application.getApp() as SoftRiseApp;
-            app.lab = lab;
-            WatchUi.pushView(lab, new LabDelegate(lab), WatchUi.SLIDE_UP);
+        if (id == :pattern || id == :ramp) {
+            var patterns = id == :pattern;
+            var menu = new WatchUi.Menu2({:title=>patterns ? "Wake pattern" : "Ramp options"});
+            var count = patterns ? LabPlan.PATTERNS.size() : 5;
+            var focus = patterns ? alarm.engine.pattern : alarm.ramp - 1;
+            for (var i = 0; i < count; i += 1) {
+                var label = patterns ? LabPlan.PATTERNS[i] : (i + 1).toString() + " min";
+                menu.addItem(new WatchUi.MenuItem(label, null, i, null));
+            }
+            menu.setFocus(focus);
+            WatchUi.pushView(menu, new AlarmChoiceDelegate(alarm, patterns), WatchUi.SLIDE_UP);
+        }
+    }
+}
+
+class AlarmChoiceDelegate extends WatchUi.Menu2InputDelegate {
+    var alarm;
+    var patterns;
+    function initialize(view, isPattern) {
+        Menu2InputDelegate.initialize();
+        alarm = view;
+        patterns = isPattern;
+    }
+    function onSelect(item) {
+        if (patterns) {
+            var picker = new PatternView(alarm, item.getId());
+            var owner = Application.getApp() as SoftRiseApp;
+            owner.picker = picker;
+            WatchUi.pushView(picker, new PatternDelegate(picker), WatchUi.SLIDE_UP);
         } else {
-            alarm.ramp = id;
-            alarm.saveSettings();
-            WatchUi.requestUpdate();
+            var previous = alarm.ramp;
+            alarm.ramp = (item.getId() as Lang.Number) + 1;
+            if (!alarm.saveSettings()) { alarm.ramp = previous; }
+            WatchUi.popView(WatchUi.SLIDE_DOWN);
         }
     }
 }

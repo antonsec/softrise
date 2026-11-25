@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.0-rc.3
+
+Choose Gentle, Steady, or Slow pulse and test a pattern before saving it. Ramp options groups the five ramp lengths in one menu. After the ramp, Wake up mode repeats three taps until you stop or snooze, or the ten-minute ringing limit is reached. The preset preview replaces the vibration lab menu.
+
 ## 0.1.0-rc.2 — package prepared locally
 
 - Added Forerunner 265S to the package alongside the Forerunner 265. All 13 tests passed on the 265S simulator. Physical 265S validation is pending.
